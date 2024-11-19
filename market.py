@@ -1,6 +1,23 @@
 # fruit market program v.0.0.1
 # initialize variables
 
+def print_list_buah(database_buah):
+    # print out daftar buah / READ
+    # print header
+    print("|Index\t | Nama  \t | Harga\t | Stok\t | Cart\t |")
+    for i in range(0, len(database_buah)):
+        print(f"|{i}\t | {database_buah[i]['nama']}  \t | {database_buah[i]['harga']}\t | {database_buah[i]['stok']}\t | {database_buah[i]['cart']}\t |")
+
+def read_validated_input(dtype, message):
+    temp_input = None
+    while temp_input is None:
+        try:
+            temp_input = dtype( input(f"Masukkan {message}: "))
+        except Exception as e:
+            print("Input Belum Benar, Input Ulang!")
+    else:
+        return temp_input
+    
 # Define fruit database
 database_buah = [
     {
@@ -36,37 +53,36 @@ while menu!=6:
     try:
         menu = int(input("Masukkan input Menu, 1-6: "))
         if menu == 1:
-            # print out daftar buah / READ
-            # print header
-            print("|Index\t | Nama  \t | Harga\t | Stok\t | Cart\t |")
-            for i in range(0, len(database_buah)):
-                print(f"|{i}\t | {database_buah[i]['nama']}  \t | {database_buah[i]['harga']}\t | {database_buah[i]['stok']}\t | {database_buah[i]['cart']}\t |")
+            print_list_buah(database_buah)
         elif menu == 2:
+            print_list_buah(database_buah)
             #menambah buah / CREATE
             #memeriksa nama buah lama
             nama_buah_lama = [buah['nama'] for buah in database_buah]
 
             #meminta input  
-            nama_buah_baru = input("Masukkan Nama Buah Baru: ")
+            nama_buah_baru = read_validated_input(str, "Nama Buah Baru")
             #validasi apakah nama buah baru ada di database
             if nama_buah_baru in nama_buah_lama:
                 print("Buah sudah ada! ")
             else:
-                harga_buah_baru = int(input("Masukkan Harga Buah Baru: "))
+                harga_buah_baru = read_validated_input(int,"Masukkan Harga Buah Baru: ")
                 stok_buah_baru = int(input("Masukkan Stok Buah Baru: "))
                 database_buah.append({
                     "nama":nama_buah_baru,
                     "harga":harga_buah_baru,
                     "stok":stok_buah_baru,
-                    "cart":100,
+                    "cart":None,
                 })
         elif menu == 3:
+            print_list_buah(database_buah)
             #menghapus buah / DELETE
             for i in range(0, len(database_buah)):
                 print(f"Buah tersedia: {database_buah[i]['nama']}, Indeks: {i} ")
             index_buah_to_be_deleted = int(input("Masukkan Index Buah Ingin Dihapus: "))
             del database_buah[index_buah_to_be_deleted]
         elif menu == 4:
+            print_list_buah(database_buah)
             #update buah/ UPDATE
             for i in range(0, len(database_buah)):
                 print(f"Buah tersedia: {database_buah[i]['nama']}, Indeks: {i} ")
@@ -87,6 +103,7 @@ while menu!=6:
             else:
                 database_buah[index_buah_to_be_updated]['stok'] = stok_buah_baru
         elif menu == 5:
+            print_list_buah(database_buah)
             for i in range(0, len(database_buah)):
                 while database_buah[i]['cart'] is None:
                     print(f"Jumlah {database_buah[i]['nama']} yang tersedia: {database_buah[i]['stok']}")
